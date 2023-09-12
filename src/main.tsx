@@ -6,11 +6,13 @@ import Pagination from "./Pagination.tsx";
 import {createRoot} from "react-dom/client";
 import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
 import {ReactQueryDevtools} from "@tanstack/react-query-devtools";
+import ReactInfiniteScrollerTest from "./ReactInfiniteScrollerTest.tsx";
 
 const router = createBrowserRouter(createRoutesFromElements(
     <Route element={<App/>}>
       <Route index path="/" element={<Navigate to="/pagination" />} />
       <Route index path="/pagination" element={<Pagination />} />
+      <Route path="/ric" element={<ReactInfiniteScrollerTest />} />
     </Route>)
 )
 

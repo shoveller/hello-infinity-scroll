@@ -17,13 +17,14 @@ const ReactInfiniteScrollerTest = () => {
                 hasMore={items.length <= 200}
                 loader={<div key={0}>로딩중</div>}
                 useWindow={false}
-            ><ul>
-                {
-                    items.map((_, index) => {
-                        return <li>{index}</li>
-                    })
-                }
-            </ul>
+            >
+                <ul>
+                    {
+                        items.map((_, index) => {
+                            return <li>{index}</li>
+                        })
+                    }
+                </ul>
             </InfiniteScroll>
         </div>
     )

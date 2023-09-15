@@ -20,14 +20,7 @@ const router = createBrowserRouter(createRoutesFromElements(
     </Route>)
 )
 
-export const client = new QueryClient({
-    defaultOptions: {
-        queries: {
-            staleTime: 2000,
-            keepPreviousData: true
-        }
-    }
-})
+export const client = new QueryClient()
 
 createRoot(document.getElementById('root')!).render(
     <React.StrictMode>

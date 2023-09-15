@@ -1,26 +1,33 @@
-import {Suspense} from "react";
-import {atom, useAtom, useAtomValue} from "jotai";
+import {atom, useAtomValue} from "jotai";
 import {client} from "./main.tsx";
+import {atomFamily} from "jotai/utils";
+import {useSearchParams} from "react-router-dom";
+import {loadable} from "jotai/utils"
 
-const pageAtom = atom(0)
+const pokeAtomFamily = atomFamily((page: string) => {
+    return atom(async () => {
+        const queryKey = ['poke2', page]
 
-const pokeAtom = atom(async (get) => {
-    const page = get(pageAtom);
-
-    return await client.fetchQuery({
-        queryKey: ['poke', page],
-        queryFn: () => fetch(`https://pokeapi.co/api/v2/pokemon?limit=5&offset=${page}`).then<PokeResponse<Poke>>(res => res.json()).then(data => data.results),
-        staleTime: 2000,
+        return await client.fetchQuery({
+            queryKey,
+            queryFn: () => fetch(`https://pokeapi.co/api/v2/pokemon?limit=5&offset=${page}`).then<PokeResponse<Poke>>(res => res.json()).then(data => data.results)
+        })
     })
 })
 
 const Contents = () => {
-    const data = useAtomValue(pokeAtom);
+    const [params] = useSearchParams()
+    const page = params.get('page') || '0'
+    const data = useAtomValue(loadable(pokeAtomFamily(page)));
+
+    if (data.state !== 'hasData') {
+        return <>로딩중</>
+    }
 
     return (
         <ul>
             {
-                data.map(item => {
+                data.data.map(item => {
                     return <li key={item.url}><a href={item.url}>{item.name}</a></li>
                 })
 
@@ -31,14 +38,15 @@ const Contents = () => {
 }
 
 const QueryClientOnlyTest = () => {
-    const [page, setPage] = useAtom(pageAtom)
+    const [params, setParams] = useSearchParams()
+    const page = params.get('page') || '0'
 
     return (
         <>
-            <Suspense fallback="로딩중"><Contents/></Suspense>
+            <Contents/>
             <div>
-                <button onClick={() => setPage(page - 1)}>이전페이지</button>
-                <button onClick={() => setPage(page + 1)}>다음페이지</button>
+                <button onClick={() => setParams({ page: `${Number(page) - 1}` })}>이전페이지</button>
+                <button onClick={() => setParams({ page: `${Number(page) + 1}` })}>다음페이지</button>
             </div>
         </>
     )

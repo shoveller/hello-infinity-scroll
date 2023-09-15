@@ -8,7 +8,7 @@ const pokeAtomFamily = atomFamily((page: string) => {
   const [atom] = atomsWithQuery(() => {
     return {
       queryKey: ['poke', page],
-      queryFn: () => fetch(`https://pokeapi.co/api/v2/pokemon?limit=5&offset=${page}`).then<PokeResponse<Poke>>(res => res.json()).then(data => data.results)
+      queryFn: () => fetch(`https://pokeapi.co/api/v2/pokemon?limit=5&offset=${page}`).then<PokeResponse<Poke>>(res => res.json()).then(data => data.results),
     }
   })
 

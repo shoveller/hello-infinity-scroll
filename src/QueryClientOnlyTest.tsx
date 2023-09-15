@@ -6,10 +6,8 @@ import {loadable} from "jotai/utils"
 
 const pokeAtomFamily = atomFamily((page: string) => {
     return atom(async () => {
-        const queryKey = ['poke2', page]
-
         return await client.fetchQuery({
-            queryKey,
+            queryKey: ['poke2', page],
             queryFn: () => fetch(`https://pokeapi.co/api/v2/pokemon?limit=5&offset=${page}`).then<PokeResponse<Poke>>(res => res.json()).then(data => data.results)
         })
     })

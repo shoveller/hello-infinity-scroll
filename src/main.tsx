@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {FC, PropsWithChildren} from 'react'
 import App from './App.tsx'
 import './index.css'
 import {createBrowserRouter, createRoutesFromElements, Navigate, Route, RouterProvider} from "react-router-dom";
@@ -13,6 +13,8 @@ import {DevTools} from "jotai-devtools";
 import AtomWithQueryTest from "./AtomWithQueryTest.tsx";
 import {Provider, createStore} from "jotai";
 import AdvencedAtomWithQueryTest from "./AdvencedAtomWithQueryTest.tsx";
+import {useHydrateAtoms} from "jotai/react/utils";
+import {queryClientAtom} from "jotai-tanstack-query";
 
 const router = createBrowserRouter(createRoutesFromElements(
     <Route element={<App/>}>
@@ -26,14 +28,28 @@ const router = createBrowserRouter(createRoutesFromElements(
     </Route>)
 )
 
-export const client = new QueryClient()
+export const client = new QueryClient({
+    defaultOptions: {
+        queries: {
+            staleTime: 5000,
+        }
+    }
+})
 const store = createStore();
+
+const HydrateAtoms: FC<PropsWithChildren> = ({ children }) => {
+    // atomWithQuery가 내부적으로 사용하는 atom을 react-query 와 동기화해야 한다
+    useHydrateAtoms([[queryClientAtom, client]])
+    return children
+}
 
 createRoot(document.getElementById('root')!).render(
     <React.StrictMode>
         <Provider store={store}>
             <QueryClientProvider client={client}>
-                <RouterProvider router={router}/>
+                <HydrateAtoms>
+                    <RouterProvider router={router}/>
+                </HydrateAtoms>
                 <ReactQueryDevtools/>
             </QueryClientProvider>
             <DevTools store={store}/>

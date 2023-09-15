@@ -7,16 +7,27 @@ import {createRoot} from "react-dom/client";
 import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
 import {ReactQueryDevtools} from "@tanstack/react-query-devtools";
 import ReactInfiniteScrollerTest from "./ReactInfiniteScrollerTest.tsx";
+import InfiniteQueryTest from "./InfiniteQueryTest.tsx";
+import QueryClientOnlyTest from "./QueryClientOnlyTest.tsx";
 
 const router = createBrowserRouter(createRoutesFromElements(
     <Route element={<App/>}>
       <Route index path="/" element={<Navigate to="/pagination" />} />
       <Route index path="/pagination" element={<Pagination />} />
       <Route path="/ric" element={<ReactInfiniteScrollerTest />} />
+      <Route path="/infTest" element={<InfiniteQueryTest />} />
+      <Route path="/qrOnlyTest" element={<QueryClientOnlyTest />} />
     </Route>)
 )
 
-const client = new QueryClient()
+export const client = new QueryClient({
+    defaultOptions: {
+        queries: {
+            staleTime: 2000,
+            keepPreviousData: true
+        }
+    }
+})
 
 createRoot(document.getElementById('root')!).render(
     <React.StrictMode>

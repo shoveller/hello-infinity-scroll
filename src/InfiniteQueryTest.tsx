@@ -15,9 +15,18 @@ const InfiniteQueryTest = () => {
          * @param allPages 전체 페이지 데이터
          */
         getNextPageParam: (lastPage) => {
-            // 이
+            // 이 지점에서 다음 url을 만들어 주어야 한다.
+            // infinite query 를 자원하는 api들은 next 라는 프로퍼티에 담아서 주는 것이 관례이다.
+            // 원리를 이해하고 있다면, 이 지점에서 url을 만들어 주면 구현할 수 있다.
             return lastPage.next
         },
+        getPreviousPageParam: (firstPage) => {
+            // 이 지점에서 이전 url을 만들어 주어야 한다.
+            // infinite query 를 자원하는 api들은 next 라는 프로퍼티에 담아서 주는 것이 관례이다.
+            // 원리를 이해하고 있다면, 이 지점에서 url을 만들어 주면 구현할 수 있다.
+            debugger
+            return firstPage.previous
+        }
     })
     // data?.pages // pageParams 로 가져온 데이터
     // data?.pageParams // 데이터를 호출하는 주소. getNextPageParam 과 getPreviousPageParam 에서 만들어 주어야 한다.

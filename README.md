@@ -1,7 +1,7 @@
 - 인피니트 스크롤 예제: https://github.com/danbovey/react-infinite-scroller/blob/master/docs/src/index.js#L25
 - https://goddino.tistory.com/358
 
-- 이 리파지토리에는 구현이 되어 있지 않으나, 무한스크롤은 아래의 컴포넌트를 사용하면 쉽게 구현할 수 있다.  
+- 무한스크롤은 아래의 컴포넌트를 사용하면 쉽게 구현할 수 있다.  
   [react-infinite-scroller](https://www.npmjs.com/package/react-infinite-scroller) 사용예제
 
 ```jsx
